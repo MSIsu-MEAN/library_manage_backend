@@ -13,7 +13,7 @@ app.use(cors())
 var env=require('dotenv').config()
 
 // local or server integration
-var config=require("../MEAN_backend/config/local")
+var config=require("./config/local")
 
 //routers path
 var indexRouter = require('./routes/index');

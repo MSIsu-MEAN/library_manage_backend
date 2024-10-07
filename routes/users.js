@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.post('/signIn',controller.signIn)
 router.post('/addBooks',controller.addBooks)
 router.post('/particularList',controller.particularList)
 router.post('/booksList',controller.booksList)

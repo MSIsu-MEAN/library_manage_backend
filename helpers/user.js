@@ -25,14 +25,12 @@ exports.addBooks = async (req, res) => {
         if (!ISBN || !validator.isISBN(ISBN)) {
             errors.push('Invalid ISBN format.');
         }
-
         if (errors.length > 0) {
-            return res.status(400).json({ message: errors, status: false });
+            return res.json({ message: errors, status: false });
         }
         bookSchema.find({ ISBN: req.body.ISBN }).then((foundNumber) => {
-            console.log("sdfdsfhdsjhf",foundNumber)
-            if (foundNumber || foundNumber!=[]) {
-                res.status(400).json({ message: "ISBN Number is invalid or already exists", status: false })
+            if (foundNumber.length > 0) {
+                res.json({ message: "ISBN Number is invalid or already exists", status: false })
             }
             else {
                 bookSchema.create({

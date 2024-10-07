@@ -1,6 +1,13 @@
 var mongoose = require('mongoose')
 var bookSchema = require('../models/userschema')
+var loginSchema = require('../models/login')
 var validator = require('validator')
+
+exports.signIn = async (req, res) => {
+    loginSchema.find({ name: req.body.name, password: req.body.password }).then((response) => {
+        res.json({ status: true, message: 'Login Successfully', data: response })
+    })
+}
 
 // add books
 exports.addBooks = async (req, res) => {
@@ -25,6 +32,7 @@ exports.addBooks = async (req, res) => {
         if (!ISBN || !validator.isISBN(ISBN)) {
             errors.push('Invalid ISBN format.');
         }
+
         if (errors.length > 0) {
             return res.json({ message: errors, status: false });
         }
@@ -57,7 +65,6 @@ exports.addBooks = async (req, res) => {
 //list particular books
 exports.particularList = async (req, res) => {
     try {
-        const objectId = new mongoose.Types.ObjectId(req.body.id);
         bookSchema.find({ ISBN: req.body.ISBN }).then((selectedList) => {
             if (!selectedList)
                 res.status(400).json({ message: 'Invalid Data', status: false })
@@ -86,7 +93,6 @@ exports.booksList = async (req, res) => {
 //update books data
 exports.updateBooks = async (req, res) => {
     try {
-        // const objectId = new mongoose.Types.ObjectId(req.body.id);
         bookSchema.findOne({ ISBN: req.body.ISBN }).then((data) => {
             if (data) {
                 bookSchema.updateMany({ ISBN: req.body.ISBN }, { title: req.body.title, author: req.body.author, description: req.body.description, publicationYear: req.body.publicationYear, ISBN: req.body.ISBN }, { new: true }).then((updateData) => {
@@ -108,7 +114,6 @@ exports.updateBooks = async (req, res) => {
 //delete books
 exports.deleteBooks = async (req, res) => {
     try {
-        const objectId = new mongoose.Types.ObjectId(req.body.id);
         await bookSchema.deleteOne({ ISBN: req.body.ISBN }).then((deleted) => {
             if (deleted.deletedCount == 0)
                 res.status(400).json({ message: 'Datas not found', status: false })

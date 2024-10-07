@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../MEAN_backend/app');
+const app = require('./app');
 const mongoose = require('mongoose');
 
 describe('POST /users/addBooks', () => {
